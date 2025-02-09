@@ -16,14 +16,6 @@ class Category(models.Model):
         verbose_name_plural = 'Categories'
         db_table = 'categories'
 
-    def to_json(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'description': self.description,
-            'image_url': self.image_url
-        }
-
     def __str__(self):
         return self.name
 #
