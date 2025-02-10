@@ -1,21 +1,47 @@
 import { useState } from "react";
+import { register, login } from "../api";
 
 export default function Login() {
   const [isRegister, setIsRegister] = useState(false);
   const [formData, setFormData] = useState({
+    firstname: "",
+    secondname: "",
     username: "",
     email: "",
     password: "",
+    repeatPassword: "",
   });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(isRegister ? "Регистрация" : "Вход", formData);
-    // TODO: Подключить к backend API
+    
+    if (isRegister && formData.password !== formData.repeatPassword) {
+      alert("Пароли не совпадают!");
+      return;
+    }
+
+    try {
+      if (isRegister) {
+        console.log("Регистрация...");
+        await register(formData);
+        console.log("Регистрация успешна! Входим...");
+
+        // Auto-login after registration
+        await login({ email: formData.email, password: formData.password });
+        console.log("Вход выполнен успешно!");
+      } else {
+        console.log("Вход...");
+        await login({ email: formData.email, password: formData.password });
+        console.log("Вход выполнен успешно!");
+      }
+    } catch (error) {
+      console.error("Ошибка:", error.response?.data || error.message);
+      alert("Ошибка: " + (error.response?.data?.message || "Попробуйте снова"));
+    }
   };
 
   return (
@@ -26,19 +52,47 @@ export default function Login() {
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           {isRegister && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Имя пользователя
-              </label>
-              <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-                className="mt-1 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
-              />
-            </div>
+            <>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Имя
+                </label>
+                <input
+                  type="text"
+                  name="firstname"
+                  value={formData.firstname}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Фамилия
+                </label>
+                <input
+                  type="text"
+                  name="secondname"
+                  value={formData.secondname}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Имя пользователя
+                </label>
+                <input
+                  type="text"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                />
+              </div>
+            </>
           )}
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -66,6 +120,21 @@ export default function Login() {
               className="mt-1 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
             />
           </div>
+          {isRegister && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Повторите пароль
+              </label>
+              <input
+                type="password"
+                name="repeatPassword"
+                value={formData.repeatPassword}
+                onChange={handleChange}
+                required
+                className="mt-1 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+              />
+            </div>
+          )}
           <button
             type="submit"
             className="w-full bg-sky-500 text-white p-2 rounded-lg hover:bg-sky-600 transition"
