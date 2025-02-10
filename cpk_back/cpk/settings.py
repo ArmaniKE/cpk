@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'sec',
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
+
 ]
 
 MIDDLEWARE = [
@@ -52,15 +54,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # React (Vite) frontend
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
+    "http://localhost:5173",  # For local development
+    "http://127.0.0.1:8000", # Alternative for local development
 ]
 
 ROOT_URLCONF = 'cpk.urls'
