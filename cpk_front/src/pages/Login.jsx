@@ -4,12 +4,12 @@ import { register, login } from "../api";
 export default function Login() {
   const [isRegister, setIsRegister] = useState(false);
   const [formData, setFormData] = useState({
-    firstname: "",
-    secondname: "",
+    first_name: "",
+    last_name: "",
     username: "",
     email: "",
     password: "",
-    repeatPassword: "",
+    re_password: "",
   });
 
   const handleChange = (e) => {
@@ -19,30 +19,31 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (isRegister && formData.password !== formData.repeatPassword) {
-      alert("Пароли не совпадают!");
-      return;
-    }
-
     try {
       if (isRegister) {
         console.log("Регистрация...");
         await register(formData);
         console.log("Регистрация успешна! Входим...");
-
+        
         // Auto-login after registration
-        await login({ email: formData.email, password: formData.password });
-        console.log("Вход выполнен успешно!");
+        const data = await login({ username: formData.username, password: formData.password });
+        console.log("Вход выполнен успешно!", data);
       } else {
         console.log("Вход...");
-        await login({ email: formData.email, password: formData.password });
-        console.log("Вход выполнен успешно!");
+        const data = await login({ username: formData.username, password: formData.password });
+  
+        if (data.token) {
+          console.log("Вход выполнен успешно! Перенаправление...");
+          // Redirect user to another page if needed
+          // window.location.href = "/dashboard";
+        }
       }
     } catch (error) {
       console.error("Ошибка:", error.response?.data || error.message);
       alert("Ошибка: " + (error.response?.data?.message || "Попробуйте снова"));
     }
   };
+  
 
   return (
     <div className="flex items-center justify-center py-10 bg-gray-100">
@@ -59,8 +60,8 @@ export default function Login() {
                 </label>
                 <input
                   type="text"
-                  name="firstname"
-                  value={formData.firstname}
+                  name="first_name"
+                  value={formData.first_name}
                   onChange={handleChange}
                   required
                   className="mt-1 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
@@ -72,8 +73,8 @@ export default function Login() {
                 </label>
                 <input
                   type="text"
-                  name="secondname"
-                  value={formData.secondname}
+                  name="last_name"
+                  value={formData.last_name}
                   onChange={handleChange}
                   required
                   className="mt-1 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
@@ -81,12 +82,12 @@ export default function Login() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Имя пользователя
+                  Электронная почта
                 </label>
                 <input
-                  type="text"
-                  name="username"
-                  value={formData.username}
+                  type="email"
+                  name="email"
+                  value={formData.email}
                   onChange={handleChange}
                   required
                   className="mt-1 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
@@ -96,12 +97,12 @@ export default function Login() {
           )}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Электронная почта
+              Имя пользователя
             </label>
             <input
-              type="email"
-              name="email"
-              value={formData.email}
+              type="text"
+              name="username"
+              value={formData.username}
               onChange={handleChange}
               required
               className="mt-1 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
@@ -127,8 +128,8 @@ export default function Login() {
               </label>
               <input
                 type="password"
-                name="repeatPassword"
-                value={formData.repeatPassword}
+                name="re_password"
+                value={formData.re_password}
                 onChange={handleChange}
                 required
                 className="mt-1 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
