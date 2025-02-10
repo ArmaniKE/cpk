@@ -1,152 +1,30 @@
-import { useState } from "react";
-import { register, login } from "../api";
+import React from "react";
 
-export default function Login() {
-  const [isRegister, setIsRegister] = useState(false);
-  const [formData, setFormData] = useState({
-    firstname: "",
-    secondname: "",
-    username: "",
-    email: "",
-    password: "",
-    repeatPassword: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (isRegister && formData.password !== formData.repeatPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-
-    try {
-      if (isRegister) {
-        const response = await register(formData);
-        console.log("Registration successful:", response.data);
-      } else {
-        const response = await login({
-          email: formData.email,
-          password: formData.password,
-        });
-        console.log("Login successful:", response.data);
-      }
-    } catch (error) {
-      console.error("Error:", error.response?.data || error.message);
-      alert(error.response?.data?.message || "Something went wrong!");
-    }
-  };
-
+const Delivery = () => {
   return (
-    <div className="flex items-center justify-center py-10 bg-gray-100">
-      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
-        <h2 className="text-xl font-semibold text-center mb-4">
-          {isRegister ? "Регистрация" : "Вход"}
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {isRegister && (
-            <>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Имя
-                </label>
-                <input
-                  type="text"
-                  name="firstname"
-                  value={formData.firstname}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 w-full p-2 border rounded-lg"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Фамилия
-                </label>
-                <input
-                  type="text"
-                  name="secondname"
-                  value={formData.secondname}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 w-full p-2 border rounded-lg"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Имя пользователя
-                </label>
-                <input
-                  type="text"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 w-full p-2 border rounded-lg"
-                />
-              </div>
-            </>
-          )}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Электронная почта
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="mt-1 w-full p-2 border rounded-lg"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Пароль
-            </label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              className="mt-1 w-full p-2 border rounded-lg"
-            />
-          </div>
-          {isRegister && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Повторите пароль
-              </label>
-              <input
-                type="password"
-                name="repeatPassword"
-                value={formData.repeatPassword}
-                onChange={handleChange}
-                required
-                className="mt-1 w-full p-2 border rounded-lg"
-              />
-            </div>
-          )}
-          <button type="submit" className="w-full bg-sky-500 text-white p-2 rounded-lg">
-            {isRegister ? "Зарегистрироваться" : "Войти"}
-          </button>
-        </form>
-        <p className="text-sm text-center mt-4">
-          {isRegister ? "Уже есть аккаунт?" : "Нет аккаунта?"}{" "}
-          <button
-            type="button"
-            className="text-sky-500 hover:underline"
-            onClick={() => setIsRegister(!isRegister)}
-          >
-            {isRegister ? "Войти" : "Зарегистрироваться"}
-          </button>
+    <div className="px-10 py-5 bg-[#E8E8E8]">
+      <div className="text-[#6F6D6D] space-x-2 font-semibold">
+        <span className="">Главная</span>
+        <span className="">{">"}</span>
+        <span className="">Доставка и оплата</span>
+      </div>
+      <div className="py-10">
+        <h1 className="text-center text-[64px] font-semibold">
+          Доставка и оплата
+        </h1>
+        <p className="py-10">
+          Наша компания осуществляет доставку товаров по всей территории
+          Казахстана при заказе на сумму свыше 500 000 тг. на договорных
+          условиях (сроки и цена, зависят от расстояния)
+          <br />
+          <br />
+          Заказы на меньшую сумму, осуществляются самовывозом с торговых точек в
+          городах Нур-Султан, Алматы, Семей, Усть-Каменогорск, Уральск, Атырау,
+          Актау, Актобе.
         </p>
       </div>
     </div>
   );
-}
+};
+
+export default Delivery;
