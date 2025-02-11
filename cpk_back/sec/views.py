@@ -36,4 +36,4 @@ class LogoutView(APIView):
         except (AttributeError, ObjectDoesNotExist):
             pass
 
-        return Response({'message': 'You have successfully logged out!'}, status=status.HTTP_200_OK)
+        return Response({'message': 'You have successfully logged out!'}, status=200)
