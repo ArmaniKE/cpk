@@ -9,7 +9,7 @@ const Home = () => {
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="text-center text-white z-10">
-          <h1 className="text-[50px] font-bold">Посдуа на вынос</h1>
+          <h1 className="text-[50px] font-bold">Посуда на вынос</h1>
           <p className="text-[24px] mt-4">
             Широкий ассортимент стильной и удобной посуды, идеально подходящей для вечеринок, уютных <br/>
             семейных посиделок, дружеских барбекю и профессионального кейтеринга. Прочные материалы, <br/>
