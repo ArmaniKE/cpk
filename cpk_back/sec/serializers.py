@@ -1,10 +1,13 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from shop.serializers import ViewItemSerializer
 
 class UserSerializer(serializers.ModelSerializer):
+    favourite_items = ViewItemSerializer(many=True, read_only=True)
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name']
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'favourite_items']
         read_only_fields = ['id']
 
 
