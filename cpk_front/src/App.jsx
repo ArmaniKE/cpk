@@ -10,6 +10,7 @@ import Wishlist from './pages/Wishlist';
 import Footer from './components/Footer';
 import Catalog from './pages/Catalog';
 import Login from './pages/Login';
+import AdminPanel from './pages/AdminPanel';
 
 function Layout() {
   return (
